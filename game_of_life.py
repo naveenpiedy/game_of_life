@@ -1,7 +1,7 @@
 import random
 import pygame
 import numpy as np
-
+import  pixel_array_manipulation
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -31,23 +31,30 @@ def game_of_life_rules(screen, x, y):
 
 def init_screen(screen):
     i = screen
-    i[120][120] = WHITE
-    i[121][120] = WHITE
-    i[120][121] = WHITE
-    i[121][121] = WHITE
+    pass
+    # i[120][120] = WHITE
+    # i[121][120] = WHITE
+    # i[120][121] = WHITE
+    # i[121][121] = WHITE
+    #
+    # i[122][119] = WHITE
+    # i[123][119] = WHITE
+    # i[123][118] = WHITE
+    # i[122][118] = WHITE
 
-    i[122][119] = WHITE
-    i[123][119] = WHITE
-    i[123][118] = WHITE
-    i[122][118] = WHITE
+    # i[122][120] = WHITE
+    # i[122][121] = WHITE
+    # i[122][122] = WHITE
 
 
 def game_loop():
     screen = pygame.Surface((WIDTH, HEIGHT))
-    win = pygame.display.set_mode((WIDTH*6, HEIGHT*6))
+    win = pygame.display.set_mode((WIDTH*3, HEIGHT*3))
     pygame.display.set_caption("Game of Life")
     screen.fill(BLACK)
     pixAr = pygame.PixelArray(screen)
+    pygame.draw.line(screen, WHITE, (0, 299), (299, 0), 1)
+    pygame.draw.line(screen, WHITE, (0, 0), (299, 299), 1)
     init_screen(pixAr)
     win.blit(pygame.transform.scale(screen, win.get_rect().size), (0, 0))
     pygame.display.update()
@@ -56,24 +63,23 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 carry_on = False
-        alive = list()
-        dead = list()
         # --- Game logic should go here
-        for x, y in np.ndindex((HEIGHT, WIDTH)):
-            l, d = game_of_life_rules(screen, x, y)
-            if l:
-                alive.extend(l)
-            if d:
-                dead.extend(d)
-        if alive:
-            for i in alive:
-                pixAr[i[0]][i[1]] = WHITE
-
-        if dead:
-            for i in dead:
-                pixAr[i[0]][i[1]] = BLACK
-
-
+        # for x, y in np.ndindex((HEIGHT, WIDTH)):
+        #     l, d = game_of_life_rules(screen, x, y)
+        #     if l:
+        #         alive.extend(l)
+        #     if d:
+        #         dead.extend(d)
+        # if alive:
+        #     for i in alive:
+        #         pixAr[i[0]][i[1]] = WHITE
+        #
+        # if dead:
+        #     for i in dead:
+        #         pixAr[i[0]][i[1]] = BLACK
+        
+        pixAr = pixel_array_manipulation.pixel_array_manipulator(pixAr, HEIGHT, WIDTH)
+        pygame.surfarray.blit_array(screen, np.array(pixAr))
         win.blit(pygame.transform.scale(screen, win.get_rect().size), (0, 0))
         pygame.display.update()
 
