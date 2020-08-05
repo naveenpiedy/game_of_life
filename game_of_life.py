@@ -7,6 +7,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 HEIGHT = 300
 WIDTH = 300
+RUNNING = 1
+PAUSE = 0
 
 
 def game_of_life_rules(screen, x, y):
@@ -52,9 +54,13 @@ def game_loop():
     win = pygame.display.set_mode((WIDTH*3, HEIGHT*3))
     pygame.display.set_caption("Game of Life")
     screen.fill(BLACK)
+    state = PAUSE
     pixAr = pygame.PixelArray(screen)
-    pygame.draw.line(screen, WHITE, (0, 299), (299, 0), 1)
-    pygame.draw.line(screen, WHITE, (0, 0), (299, 299), 1)
+    pygame.draw.line(screen, WHITE, (1, 299), (299, 1), 1)
+    pygame.draw.line(screen, WHITE, (150, 1), (150, 299), 1)
+    pygame.draw.line(screen, WHITE, (1, 1), (299, 299), 1)
+    pygame.draw.circle(screen, WHITE, (150, 150), 60, 1)
+    pygame.draw.circle(screen, WHITE, (150, 150), 80, 1)
     init_screen(pixAr)
     win.blit(pygame.transform.scale(screen, win.get_rect().size), (0, 0))
     pygame.display.update()
@@ -63,6 +69,11 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 carry_on = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    state = PAUSE
+                if event.key == pygame.K_u:
+                    state = RUNNING
         # --- Game logic should go here
         # for x, y in np.ndindex((HEIGHT, WIDTH)):
         #     l, d = game_of_life_rules(screen, x, y)
@@ -77,9 +88,9 @@ def game_loop():
         # if dead:
         #     for i in dead:
         #         pixAr[i[0]][i[1]] = BLACK
-        
-        pixAr = pixel_array_manipulation.pixel_array_manipulator(pixAr, HEIGHT, WIDTH)
-        pygame.surfarray.blit_array(screen, np.array(pixAr))
+        if state == RUNNING:
+            pixAr = pixel_array_manipulation.pixel_array_manipulator(pixAr, HEIGHT, WIDTH)
+            pygame.surfarray.blit_array(screen, np.array(pixAr))
         win.blit(pygame.transform.scale(screen, win.get_rect().size), (0, 0))
         pygame.display.update()
 

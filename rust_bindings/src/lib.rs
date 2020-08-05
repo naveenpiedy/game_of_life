@@ -1,32 +1,28 @@
 use pyo3::prelude::*;
-use pyo3::types::PyList;
 use pyo3::wrap_pyfunction;
+use std::thread;
 
 static WHITE: usize = 16777215;
 static BLACK: usize = 0;
 
 #[pyfunction]
 fn pixel_array_manipulator(pixel_array: Vec<Vec<usize>>, height: usize, width: usize) -> PyResult<Vec<Vec<usize>>> {
-    let mut pixel_vector: Vec<Vec<usize>> = Vec::new();
     let mut new_pixel_vector: Vec<Vec<usize>> = Vec::new();
 
-    for item in pixel_array {
-        let mut temp_vector: Vec<usize> = Vec::new();
-        for point in item {
-            temp_vector.push(point);
-        }
-        pixel_vector.push(temp_vector);
-    }
+    // let (left, right) = pixel_array.split_at(150);
+
     for i in 0..height {
         let mut temp_vector: Vec<usize> = Vec::new();
         for j in 0..width {
-            let life = game_of_life(&pixel_vector, i, j, height, width);
+            let life = game_of_life(&pixel_array, i, j, height, width);
             temp_vector.push(life)
         }
         new_pixel_vector.push(temp_vector);
     }
+
     Ok(new_pixel_vector)
 }
+
 
 fn game_of_life(pixel_vector: &Vec<Vec<usize>>, x: usize, y: usize, height: usize, width: usize) -> usize {
     let mut x_0 = 0;
