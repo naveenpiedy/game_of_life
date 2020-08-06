@@ -75,22 +75,25 @@ def game_loop():
                 if event.key == pygame.K_u:
                     state = RUNNING
         # --- Game logic should go here
-        # for x, y in np.ndindex((HEIGHT, WIDTH)):
-        #     l, d = game_of_life_rules(screen, x, y)
-        #     if l:
-        #         alive.extend(l)
-        #     if d:
-        #         dead.extend(d)
-        # if alive:
-        #     for i in alive:
-        #         pixAr[i[0]][i[1]] = WHITE
-        #
-        # if dead:
-        #     for i in dead:
-        #         pixAr[i[0]][i[1]] = BLACK
         if state == RUNNING:
             pixAr = pixel_array_manipulation.pixel_array_manipulator(pixAr, HEIGHT, WIDTH)
+            # alive = []
+            # dead = []
+            # for x, y in np.ndindex((HEIGHT, WIDTH)):
+            #     l, d = game_of_life_rules(screen, x, y)
+            #     if l:
+            #         alive.extend(l)
+            #     if d:
+            #         dead.extend(d)
+            # if alive:
+            #     for i in alive:
+            #         pixAr[i[0]][i[1]] = WHITE
+            #
+            # if dead:
+            #     for i in dead:
+            #         pixAr[i[0]][i[1]] = BLACK
             pygame.surfarray.blit_array(screen, np.array(pixAr))
+            # pygame.surfarray.blit_array(screen, pixAr)
         win.blit(pygame.transform.scale(screen, win.get_rect().size), (0, 0))
         pygame.display.update()
 

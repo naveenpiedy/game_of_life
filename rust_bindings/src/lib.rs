@@ -21,6 +21,7 @@ fn pixel_array_manipulator(pixel_array: Vec<Vec<usize>>, height: usize, width: u
         new_pixel_vector = [&vec1[..], &vec2[..], &vec3[..]].concat()
     });
 
+    // new_pixel_vector = threaded_function(&pixel_array, 0, 300, 300);
 
     Ok(new_pixel_vector)
 }
