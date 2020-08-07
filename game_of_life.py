@@ -1,7 +1,7 @@
 import random
 import pygame
 import numpy as np
-import  pixel_array_manipulation
+import pixel_array_manipulation
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -76,9 +76,8 @@ def game_loop():
                     state = RUNNING
         # --- Game logic should go here
         if state == RUNNING:
-            pixAr = pixel_array_manipulation.pixel_array_manipulator(pixAr, HEIGHT, WIDTH)
-            # alive = []
-            # dead = []
+            alive = []
+            dead = []
             # for x, y in np.ndindex((HEIGHT, WIDTH)):
             #     l, d = game_of_life_rules(screen, x, y)
             #     if l:
@@ -92,8 +91,9 @@ def game_loop():
             # if dead:
             #     for i in dead:
             #         pixAr[i[0]][i[1]] = BLACK
-            pygame.surfarray.blit_array(screen, np.array(pixAr))
             # pygame.surfarray.blit_array(screen, pixAr)
+            pixAr = pixel_array_manipulation.pixel_array_manipulator(pixAr, HEIGHT, WIDTH)
+            pygame.surfarray.blit_array(screen, np.array(pixAr))
         win.blit(pygame.transform.scale(screen, win.get_rect().size), (0, 0))
         pygame.display.update()
 
