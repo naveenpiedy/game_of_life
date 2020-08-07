@@ -76,8 +76,8 @@ def game_loop():
                     state = RUNNING
         # --- Game logic should go here
         if state == RUNNING:
-            alive = []
-            dead = []
+            # alive = []
+            # dead = []
             # for x, y in np.ndindex((HEIGHT, WIDTH)):
             #     l, d = game_of_life_rules(screen, x, y)
             #     if l:
