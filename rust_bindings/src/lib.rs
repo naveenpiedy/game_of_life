@@ -5,14 +5,17 @@ static WHITE: usize = 3555324;
 static BLACK: usize = 0;
 
 #[pyfunction]
-fn pixel_array_manipulator(pixel_array: Vec<Vec<usize>>, height: usize, width: usize) -> PyResult<Vec<Vec<usize>>> {
+fn pixel_array_manipulator(
+    pixel_array: Vec<Vec<usize>>,
+    height: usize,
+    width: usize,
+) -> PyResult<Vec<Vec<usize>>> {
     let mut new_pixel_vector: Vec<Vec<usize>> = Vec::new();
 
-
     crossbeam::scope(|scope| {
-        let handle1 =  scope.spawn(|_| threaded_function(&pixel_array, 0, 100, 300));
-        let handle2 = scope.spawn(|_|threaded_function(&pixel_array, 100, 200, 300));
-        let handle3 = scope.spawn(|_| threaded_function(&pixel_array, 200,300, 300));
+        let handle1 = scope.spawn(|_| threaded_function(&pixel_array, 0, 100, 300));
+        let handle2 = scope.spawn(|_| threaded_function(&pixel_array, 100, 200, 300));
+        let handle3 = scope.spawn(|_| threaded_function(&pixel_array, 200, 300, 300));
 
         let vec1 = handle1.join().unwrap();
         let vec2 = handle2.join().unwrap();
@@ -26,8 +29,12 @@ fn pixel_array_manipulator(pixel_array: Vec<Vec<usize>>, height: usize, width: u
     Ok(new_pixel_vector)
 }
 
-
-fn threaded_function(pixel_array: &Vec<Vec<usize>>, start_height: usize, height: usize, width: usize) -> Vec<Vec<usize>> {
+fn threaded_function(
+    pixel_array: &Vec<Vec<usize>>,
+    start_height: usize,
+    height: usize,
+    width: usize,
+) -> Vec<Vec<usize>> {
     let mut new_pixel_vector: Vec<Vec<usize>> = Vec::new();
 
     for i in start_height..height {
@@ -40,7 +47,6 @@ fn threaded_function(pixel_array: &Vec<Vec<usize>>, start_height: usize, height:
     }
     new_pixel_vector
 }
-
 
 fn game_of_life(pixel_vector: &Vec<Vec<usize>>, x: usize, y: usize, height: usize, width: usize) -> usize {
     let mut x_0 = 0;
@@ -60,12 +66,10 @@ fn game_of_life(pixel_vector: &Vec<Vec<usize>>, x: usize, y: usize, height: usiz
 
     for i in x_values.iter() {
         for j in y_values.iter() {
-            if (i < &height) && (j < &width) {
-                if (i, j) != (&x, &y) {
-                    {
-                        if pixel_vector[i.clone()][j.clone()] != BLACK {
-                            live_neighbours += 1;
-                        }
+            if ((i < &height) && (j < &width)) && (i, j) != (&x, &y) {
+                {
+                    if pixel_vector[*i][*j] != BLACK {
+                        live_neighbours += 1;
                     }
                 }
             }
